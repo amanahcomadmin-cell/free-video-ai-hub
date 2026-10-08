@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Free Video Hub & Complete Automation Suite (9:16 - 30s)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+    <!-- Header Navigation -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 px-6 py-4 flex justify-between items-center shadow-lg">
+        <div class="flex items-center space-x-3">
+            <div class="bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-600 p-2.5 rounded-xl shadow-lg shadow-indigo-500/20">
+                <i class="fa-solid fa-wand-magic-sparkles text-white text-xl"></i>
+            </div>
+            <div>
+                <h1 class="font-bold text-lg tracking-wide text-white flex items-center">
+                    FreeVideoAI Hub <span class="ml-2 px-2 py-0.5 bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 text-[10px] rounded-full uppercase tracking-wider font-semibold">Pro Suite v2.0</span>
+                </h1>
+                <p class="text-xs text-slate-400">Target: 30 Detik Dialog | Aspek Rasio Vertikal 9:16 | Auto-Auth & Registration</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-3">
+            <span class="hidden md:flex items-center px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-medium rounded-full">
+                <i class="fa-solid fa-circle text-[6px] mr-1.5 animate-pulse"></i> Engine Online
+            </span>
+            <button onclick="exportAllData()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-1.5 rounded-xl text-xs font-medium transition cursor-pointer flex items-center border border-slate-700">
+                <i class="fa-solid fa-download mr-1.5"></i> Export Config
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace Grid -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Kolom Kiri & Tengah: Script Dialog, Scene Breakdown, & Python Bot -->
+        <div class="lg:col-span-2 space-y-6">
+            
+            <!-- Panel 1: Konfigurasi Naskah & Pemecah Scene 30s -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-600/5 rounded-full blur-2xl pointer-events-none"></div>
+                
+                <h2 class="text-base font-semibold mb-4 flex items-center text-indigo-400">
+                    <i class="fa-solid fa-pen-nib mr-2"></i> 1. Input Naskah Dialog & Karakter (Total 30 Detik)
+                </h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Deskripsi Karakter & Gaya Visual (Opsional)</label>
+                        <input type="text" id="characterStyle" value="Seorang konten kreator pria ramah, jas casual, studio modern bercahaya sinematik terang" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Naskah Dialog Bahasa Indonesia (Target Durasi 30 Detik)</label>
+                        <textarea id="dialogInput" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 transition">Halo semuanya! Tahukah kalian kalau sekarang kita bisa bikin video cinematic vertikal 9:16 cuma pakai AI gratisan? Yuk simak rahasianya sampai habis di sini!</textarea>
+                    </div>
+                    <div class="flex flex-wrap justify-between items-center pt-2 gap-3">
+                        <div class="flex items-center space-x-3 text-xs text-slate-400">
+                            <span class="flex items-center"><i class="fa-solid fa-mobile-screen text-indigo-400 mr-1"></i> Rasio: 9:16 Vertikal</span>
+                            <span class="flex items-center"><i class="fa-solid fa-film text-purple-400 mr-1"></i> Output: 3 Klip @ 10s</span>
+                        </div>
+                        <button onclick="generateSceneBreakdown()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-2.5 rounded-xl text-xs transition shadow-lg shadow-indigo-600/25 cursor-pointer flex items-center">
+                            <i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Generate 3-Scene Prompts
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hasil Scene Breakdown (Hidden by default until generated) -->
+                <div id="sceneResultBox" class="hidden space-y-3 pt-6 mt-6 border-t border-slate-800">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-slate-200 uppercase tracking-wider">Hasil Prompt Per Scene (Siap Salin):</span>
+                        <button onclick="copyAllPrompts()" class="text-[11px] text-indigo-400 hover:underline flex items-center cursor-pointer">
+                            <i class="fa-regular fa-copy mr-1"></i> Salin Semua Prompt
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <!-- Scene 1 -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-xl p-3.5 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-1.5">
+                                    <span class="text-[11px] font-bold text-indigo-400">Scene 1 (0s - 10s)</span>
+                                    <span class="text-[9px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">9:16</span>
+                                </div>
+                                <p id="txtScene1" class="text-[11px] text-slate-300 italic mb-2">...</p>
+                            </div>
+                            <div class="bg-slate-900 p-2 rounded border border-slate-800 text-[10px] text-slate-400 font-mono select-all" id="promptScene1">...</div>
+                        </div>
+                        <!-- Scene 2 -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-xl p-3.5 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-1.5">
+                                    <span class="text-[11px] font-bold text-purple-400">Scene 2 (10s - 20s)</span>
+                                    <span class="text-[9px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">9:16</span>
+                                </div>
+                                <p id="txtScene2" class="text-[11px] text-slate-300 italic mb-2">...</p>
+                            </div>
+                            <div class="bg-slate-900 p-2 rounded border border-slate-800 text-[10px] text-slate-400 font-mono select-all" id="promptScene2">...</div>
+                        </div>
+                        <!-- Scene 3 -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-xl p-3.5 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-1.5">
+                                    <span class="text-[11px] font-bold text-pink-400">Scene 3 (20s - 30s)</span>
+                                    <span class="text-[9px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">9:16</span>
+                                    </div>
+                                <p id="txtScene3" class="text-[11px] text-slate-300 italic mb-2">...</p>
+                            </div>
+                            <div class="bg-slate-900 p-2 rounded border border-slate-800 text-[10px] text-slate-400 font-mono select-all" id="promptScene3">...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 2: Python Automation & Auto-Register Bot Suite -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <div class="flex flex-wrap justify-between items-center mb-4 gap-3">
+                    <h2 class="text-base font-semibold flex items-center text-purple-400">
+                        <i class="fa-solid fa-code mr-2"></i> 2. Python Automation Script (Auto-Register & Login Bot)
+                    </h2>
+                    <div class="flex items-center space-x-2">
+                        <select id="botTypeScript" onchange="updateAutomationScript()" class="bg-slate-950 border border-slate-800 text-xs text-slate-300 rounded-xl px-3 py-1.5 focus:outline-none focus:border-indigo-500">
+                            <option value="playwright">Playwright Auto-Register Bot</option>
+                            <option value="selenium">Selenium Browser Automation</option>
+                            <option value="tempmail">Temp-Mail Generator Integration</option>
+                            <option value="cookieinjector">Session Cookie Injector</option>
+                        </select>
+                        <button onclick="copyPythonCode()" class="bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded-xl text-xs font-medium transition cursor-pointer flex items-center shadow-md">
+                            <i class="fa-regular fa-copy mr-1.5"></i> Salin Kode
+                        </button>
+                    </div>
+                </div>
+                
+                <p class="text-xs text-slate-400 mb-3 leading-relaxed">
+                    Gunakan skrip Python di bawah ini untuk mengotomatiskan pendaftaran akun baru pada platform AI video gratis (seperti Luma, Kling, atau Runway) guna mendapatkan kuota uji coba secara otomatis.
+                </p>
+
+                <!-- Code Block Area -->
+                <div class="relative group">
+                    <pre id="pythonCodeBox" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-indigo-200 overflow-x-auto max-h-72 select-all leading-relaxed"><code># ==========================================
+# PLAYWRIGHT AUTO-REGISTER BOT FOR AI VIDEO
+# ==========================================
+import time
+from playwright.sync_api import sync_playwright
+
+def run_ai_auto_register(target_email, target_password, platform_url):
+    print(f"[*] Memulai automation bot untuk: {platform_url}")
+    with sync_playwright() as p:
+        # Launch browser non-headless agar Anda bisa melihat proses / verifikasi captcha manual
+        browser = p.chromium.launch(headless=False, slow_mo=50)
+        context = browser.new_context(viewport={"width": 412, "height": 915}) # Mode Mobile View
+        page = context.new_page()
+        
+        try:
+            page.goto(platform_url, timeout=60000)
+            print("[+] Berhasil membuka halaman web.")
+            
+            # Contoh automasi pengisian form sign up
+            # Sesuaikan selector CSS sesuai form target web
+            # page.fill("input[name='email']", target_email)
+            # page.fill("input[name='password']", target_password)
+            # page.click("button[type='submit']")
+            
+            print("[!] Selesaikan CAPTCHA jika muncul secara manual.")
+            time.sleep(15) # Jeda untuk verifikasi
+            
+        except Exception as e:
+            print(f"[-] Terjadi kesalahan: {e}")
+        finally:
+            browser.close()
+
+if __name__ == "__main__":
+    run_ai_auto_register("kreator_ai_demo@gmail.com", "SandiKuat123!", "https://lumalabs.ai/dream-machine")
+</code></pre>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Kolom Kanan: Vault Kredensial Lokal & Direktori Platform AI -->
+        <div class="space-y-6">
+            
+            <!-- Panel 3: Vault Akun & Kredensial Lokal -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <h2 class="text-base font-semibold mb-4 flex items-center text-emerald-400">
+                    <i class="fa-solid fa-key mr-2"></i> 3. Vault Akun & Sesi Lokal
+                </h2>
+                
+                <div class="space-y-3 mb-4">
+                    <div>
+                        <label class="block text-[11px] font-medium text-slate-400 mb-1">Pilih Platform AI</label>
+                        <select id="vaultPlatform" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+                            <option>Luma Dream Machine</option>
+                            <option>Kling AI</option>
+                            <option>HeyGen Free Trial</option>
+                            <option>Runway Gen-2</option>
+                            <option>Pika Labs</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-medium text-slate-400 mb-1">Email / Akun Terdaftar</label>
+                        <input type="text" id="vaultEmail" placeholder="email_gratisan@gmail.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-medium text-slate-400 mb-1">Password / Session Token</label>
+                        <input type="password" id="vaultPass" placeholder="Password akun" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+                    </div>
+                    <button onclick="saveAccountVault()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2.5 rounded-xl text-xs transition shadow-md shadow-emerald-600/20 cursor-pointer flex items-center justify-center">
+                        <i class="fa-solid fa-floppy-disk mr-1.5"></i> Simpan ke Vault Aman
+                    </button>
+                </div>
+
+                <!-- Daftar Akun Tersimpan -->
+                <div class="border-t border-slate-800 pt-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Akun Tersimpan (Local):</span>
+                        <span id="accountCountBadge" class="text-[10px] bg-slate-800 px-2 py-0.5 rounded-full text-slate-300">0 Akun</span>
+                    </div>
+                    <div id="savedAccountsList" class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                        <div class="text-[11px] text-slate-500 italic text-center py-3">Belum ada akun tersimpan.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 4: Direktori Cepat Generator AI -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <h2 class="text-base font-semibold mb-3 flex items-center text-amber-400">
+                    <i class="fa-solid fa-globe mr-2"></i> Direktori Platform AI Gratis
+                </h2>
+                <p class="text-[11px] text-slate-400 mb-3">Klik untuk membuka situs generator video:</p>
+                <div class="space-y-2 text-xs">
+                    <div class="flex justify-between items-center p-2.5 bg-slate-950 rounded-xl border border-slate-800 hover:border-slate-700 transition">
+                        <div>
+                            <span class="font-bold text-slate-200 block">Luma Dream Machine</span>
+                            <span class="text-[10px] text-emerald-400">Free Quota Available</span>
+                        </div>
+                        <a href="https://lumalabs.ai/dream-machine" target="_blank" class="px-2.5 py-1 bg-indigo-600/20 text-indigo-400 rounded-lg hover:bg-indigo-600/30 transition flex items-center font-medium">
+                            Buka <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[9px]"></i>
+                        </a>
+                    </div>
+                    <div class="flex justify-between items-center p-2.5 bg-slate-950 rounded-xl border border-slate-800 hover:border-slate-700 transition">
+                        <div>
+                            <span class="font-bold text-slate-200 block">Kling AI</span>
+                            <span class="text-[10px] text-emerald-400">Daily Free Credits</span>
+                        </div>
+                        <a href="https://klingai.com" target="_blank" class="px-2.5 py-1 bg-indigo-600/20 text-indigo-400 rounded-lg hover:bg-indigo-600/30 transition flex items-center font-medium">
+                            Buka <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[9px]"></i>
+                        </a>
+                    </div>
+                    <div class="flex justify-between items-center p-2.5 bg-slate-950 rounded-xl border border-slate-800 hover:border-slate-700 transition">
+                        <div>
+                            <span class="font-bold text-slate-200 block">HeyGen</span>
+                            <span class="text-[10px] text-amber-400">Free Trial Avatar</span>
+                        </div>
+                        <a href="https://www.heygen.com" target="_blank" class="px-2.5 py-1 bg-indigo-600/20 text-indigo-400 rounded-lg hover:bg-indigo-600/30 transition flex items-center font-medium">
+                            Buka <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[9px]"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-900/40 py-4 text-center text-xs text-slate-500">
+        FreeVideoAI Hub & Automation Suite &bull; Didesain khusus untuk pembuatan video vertikal 9:16 (30s Dialog)
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // 1. Fungsi Pemecah Dialog 30 Detik menjadi 3 Scene (9:16)
+        function generateSceneBreakdown() {
+            const text = document.getElementById('dialogInput').value.trim();
+            const style = document.getElementById('characterStyle').value.trim();
+
+            if (!text) {
+                alert("Mohon masukkan naskah dialog terlebih dahulu!");
+                return;
+            }
+
+            const words = text.split(" ");
+            const chunk = Math.ceil(words.length / 3);
+
+            const part1 = words.slice(0, chunk).join(" ");
+            const part2 = words.slice(chunk, chunk * 2).join(" ");
+            const part3 = words.slice(chunk * 2).join(" ");
+
+            // Tampilkan teks dialog per scene
+            document.getElementById('txtScene1').innerText = `"${part1}"`;
+            document.getElementById('txtScene2').innerText = `"${part2}"`;
+            document.getElementById('txtScene3').innerText = `"${part3}"`;
+
+            // Buat Prompt AI dalam bahasa Inggris berformat rasio 9:16 vertikal
+            const p1 = `Vertical 9:16 aspect ratio, close up shot, ${style}, speaking enthusiastically: "${part1}", cinematic studio lighting, photorealistic, 4k.`;
+            const p2 = `Vertical 9:16 aspect ratio, medium shot, ${style}, gesturing naturally while explaining: "${part2}", vibrant colors, highly detailed.`;
+            const p3 = `Vertical 9:16 aspect ratio, close up smile, ${style}, concluding gesture and friendly expression: "${part3}", warm lighting, smooth cinematic finish.`;
+
+            document.getElementById('promptScene1').innerText = p1;
+            document.getElementById('promptScene2').innerText = p2;
+            document.getElementById('promptScene3').innerText = p3;
+
+            document.getElementById('sceneResultBox').classList.remove('hidden');
+        }
+
+        // Fungsi Salin Semua Prompt
+        function copyAllPrompts() {
+            const p1 = document.getElementById('promptScene1').innerText;
+            const p2 = document.getElementById('promptScene2').innerText;
+            const p3 = document.getElementById('promptScene3').innerText;
+            const fullText = `SCENE 1 (0-10s):\n${p1}\n\nSCENE 2 (10-20s):\n${p2}\n\nSCENE 3 (20-30s):\n${p3}`;
+            
+            navigator.clipboard.writeText(fullText);
+            alert("Semua prompt berhasil disalin ke clipboard!");
+        }
+
+        // 2. Fungsi Dinamis Pemilihan Script Python Automation
+        function updateAutomationScript() {
+            const type = document.getElementById('botTypeScript').value;
+            const box = document.getElementById('pythonCodeBox');
+
+            if (type === 'playwright') {
+                box.innerText = `# ==========================================
+# PLAYWRIGHT AUTO-REGISTER BOT FOR AI VIDEO
+# ==========================================
+import time
+from playwright.sync_api import sync_playwright
+
+def run_ai_auto_register(target_email, target_password, platform_url):
+    print(f"[*] Memulai automation bot untuk: {platform_url}")
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False, slow_mo=50)
+        context = browser.new_context(viewport={"width": 412, "height": 915}) # Mode Mobile 9:16 View
+        page = context.new_page()
+        
+        try:
+            page.goto(platform_url, timeout=60000)
+            print("[+] Berhasil membuka halaman web.")
+            # page.fill("input[name='email']", target_email)
+            # page.fill("input[name='password']", target_password)
+            # page.click("button[type='submit']")
+            print("[!] Selesaikan verifikasi CAPTCHA jika muncul.")
+            time.sleep(15)
+        except Exception as e:
+            print(f"[-] Error: {e}")
+        finally:
+            browser.close()
+
+if __name__ == "__main__":
+    run_ai_auto_register("kreator_ai_demo@gmail.com", "SandiKuat123!", "https://lumalabs.ai/dream-machine")`;
+            } else if (type === 'selenium') {
+                box.innerText = `# ==========================================
+# SELENIUM BROWSER AUTOMATION HELPER
+# ==========================================
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+def selenium_auto_login(email, password, url):
+    driver = webdriver.Chrome()
+    driver.maximize_window()
+    try:
+        driver.get(url)
+        time.sleep(3)
+        print(f"[*] Memproses login otomatis untuk {email}")
+        # driver.find_element(By.NAME, "email").send_keys(email)
+        # driver.find_element(By.NAME, "password").send_keys(password)
+        time.sleep(10)
+    finally:
+        driver.quit()
+
+if __name__ == "__main__":
+    selenium_auto_login("kreator_ai_demo@gmail.com", "SandiKuat123!", "https://klingai.com")`;
+            } else if (type === 'tempmail') {
+                box.innerText = `# ==========================================
+# TEMP-MAIL GENERATOR INTEGRATION (PYTHON)
+# ==========================================
+import requests
+
+def get_temp_mail_inbox():
+    # Mengambil email sementara otomatis untuk registrasi akun uji coba gratis
+    print("[*] Menghubungkan ke API Temp-Mail...")
+    # Contoh endpoint publik layanan temp mail
+    response = requests.get("https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1")
+    if response.status_code == 200:
+        emails = response.json()
+        print(f"[+] Email Sementara Anda: {emails[0]}")
+        return emails[0]
+    return None
+
+if __name__ == "__main__":
+    temp_email = get_temp_mail_inbox()`;
+            } else {
+                box.innerText = `# ==========================================
+# SESSION COOKIE INJECTOR (BYPASS LOGIN ULANG)
+# ==========================================
+import json
+
+def inject_cookies_to_session(driver, cookie_filepath):
+    print("[*] Memuat sesi cookies tersimpan...")
+    with open(cookie_filepath, 'r') as f:
+        cookies = json.load(f)
+    for cookie in cookies:
+        driver.add_cookie(cookie)
+    driver.refresh()
+    print("[+] Sesi login berhasil dipulihkan via cookies!")`;
+            }
+        }
+
+        // Salin Kode Python
+        function copyPythonCode() {
+            const code = document.getElementById('pythonCodeBox').innerText;
+            navigator.clipboard.writeText(code);
+            alert("Kode Python berhasil disalin ke clipboard!");
+        }
+
+        // 3. Vault Manajemen Akun Lokal (Local Storage)
+        function saveAccountVault() {
+            const platform = document.getElementById('vaultPlatform').value;
+            const email = document.getElementById('vaultEmail').value;
+            const pass = document.getElementById('vaultPass').value;
+
+            if (!email) {
+                alert("Kolom email tidak boleh kosong!");
+                return;
+            }
+
+            let accounts = JSON.parse(localStorage.getItem('ai_video_vault') || '[]');
+            accounts.push({ platform, email, pass });
+            localStorage.setItem('ai_video_vault', JSON.stringify(accounts));
+
+            document.getElementById('vaultEmail').value = '';
+            document.getElementById('vaultPass').value = '';
+            loadSavedAccounts();
+            alert("Akun berhasil disimpan ke vault lokal!");
+        }
+
+        function loadSavedAccounts() {
+            const listEl = document.getElementById('savedAccountsList');
+            let accounts = JSON.parse(localStorage.getItem('ai_video_vault') || '[]');
+            
+            document.getElementById('accountCountBadge').innerText = `${accounts.length} Akun`;
+
+            if (accounts.length === 0) {
+                listEl.innerHTML = `<div class="text-[11px] text-slate-500 italic text-center py-3">Belum ada akun tersimpan.</div>`;
+                return;
+            }
+
+            let html = '';
+            accounts.forEach((acc, index) => {
+                html += `<div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 flex justify-between items-center text-[11px]">
+                    <div>
+                        <span class="font-bold text-slate-200 block">${acc.platform}</span>
+                        <span class="text-slate-400 font-mono text-[10px]">${acc.email}</span>
+                    </div>
+                    <button onclick="deleteAccount(${index})" class="text-red-400 hover:text-red-300 p-1 cursor-pointer" title="Hapus Akun">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>`;
+            });
+            listEl.innerHTML = html;
+        }
+
+        function deleteAccount(index) {
+            let accounts = JSON.parse(localStorage.getItem('ai_video_vault') || '[]');
+            accounts.splice(index, 1);
+            localStorage.setItem('ai_video_vault', JSON.stringify(accounts));
+            loadSavedAccounts();
+        }
+
+        // Export konfigurasi vault ke file JSON
+        function exportAllData() {
+            let accounts = localStorage.getItem('ai_video_vault') || '[]';
+            let blob = new Blob([accounts], { type: "application/json" });
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = "ai_video_accounts_backup.json";
+            a.click();
+        }
+
+        // Load saat halaman pertama kali dibuka
+        window.onload = function() {
+            loadSavedAccounts();
+            generateSceneBreakdown(); // Load default preview
+        }
+    </script>
+</body>
+</html>
